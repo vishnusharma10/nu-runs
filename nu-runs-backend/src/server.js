@@ -18,6 +18,17 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+// Add Access Control Allow Origin headers
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+
+
 const userSchema = mongoose.Schema({
     username: String,
     password: String,
@@ -124,14 +135,14 @@ app.get("/api/all-articles",async(req,res)=>{
             articles[key] = [];
             console.log(ans);
             articles[key] = articles[key].concat(ans);
-            res.status(200).json({success:true,code:200,data:articles});
+            return res.status(200).json({success:true,code:200,data:articles});
         });
         
 
     });
 });
 
-app.get("/api/articles/:name", async (req, res) => {
+app.get("/api/all-articles/:name", async (req, res) => {
     withDB(async (db) => {
         const articleName = req.params.name;
         const articleInfo = await db.collection("articles").findOne({
@@ -141,7 +152,7 @@ app.get("/api/articles/:name", async (req, res) => {
     });
 });
 
-app.post("/api/articles/:name/upvote", async (req, res) => {
+app.post("/api/all-articles/:name/upvote", async (req, res) => {
 
     withDB(async (db) => {
         const articleName = req.params.name;
@@ -165,13 +176,13 @@ app.post("/api/articles/:name/upvote", async (req, res) => {
 
 });
 
-app.post("/api/articles/:name/comment", async (req, res) => {
+app.post("/api/all-articles/:name/comment", async (req, res) => {
 
     withDB(async (db) => {
         const articleName = req.params.name;
         const {
             readerName,
-            text
+            comment
         } = req.body;
 
         const articleInfo = await db.collection("articles").findOne({
@@ -183,7 +194,7 @@ app.post("/api/articles/:name/comment", async (req, res) => {
             "$set": {
                 comments: articleInfo.comments.concat({
                     readerName,
-                    text
+                    comment
                 }),
             }
         });
@@ -197,7 +208,7 @@ app.post("/api/articles/:name/comment", async (req, res) => {
 });
 
 
-app.post("/api/articles/create", async (req, res) => {
+app.post("/api/all-articles/create", async (req, res) => {
     withDB((db) => {
         const articleTitle = req.body.title;
         const articleContnet = req.body.content;

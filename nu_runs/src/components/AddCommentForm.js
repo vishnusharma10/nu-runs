@@ -1,3 +1,4 @@
+import axios from "axios";
 import React,{useState} from "react";
 
 const AddCommentForm = ({articleName,setArticleInfo})=>{
@@ -5,13 +6,10 @@ const AddCommentForm = ({articleName,setArticleInfo})=>{
     const [comment,setComment] = useState("");
 
     const addComment = async() =>{
-        const result = await fetch(`/api/articles/${articleName}/comment`,{method:"post",body:JSON.stringify({
-            name:username,
-            text:comment,
-        }),
-    headers:{"Content-Type":"application/json"}});
-     const body = await result.json()
-     setArticleInfo(body);
+        const result = await axios.post(`http://localhost:8000/api/all-articles/${articleName}/comment`,{readerName:username,comment:comment});
+        console.log(result.data);
+        const updatedArticle = result.data;
+        setArticleInfo(updatedArticle);
      setUserName("");
      setComment("");
     }

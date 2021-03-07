@@ -1,12 +1,14 @@
 import React from "react";
+import axios from "axios";
 
 const UpvotesSection= ({upvotes,setArticleInfo,articleName})=>{
 
     const addUpvotes= async()=>{
-        const result = await fetch(`/api/articles/${articleName}/upvote`,{method:"post"});
-        const body = await result.json();
-        console.log(body);
-        setArticleInfo(body);
+        const result = await axios.post(`http://localhost:8000/api/all-articles/${articleName}/upvote`);
+        const article = result.data;
+        const updatedArticle = article;
+        updatedArticle["upvote"] +=1; 
+        setArticleInfo(updatedArticle);
     }
     return <div>
         <button onClick={addUpvotes}>Add Upvote</button>
