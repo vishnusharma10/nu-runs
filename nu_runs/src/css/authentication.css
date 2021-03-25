@@ -1,0 +1,15 @@
+.get-started-button{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: blue;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+.get-started-button:hover{
+    background-color: white;
+}
+#get-started-text{
+    color: white;
+}
+#get-started-text:hover{
+    color: blue;
+}

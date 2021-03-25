@@ -1,0 +1,14 @@
+#upvotes-button{
+    padding:5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10px;
+    background-color: blue;
+    color:white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#upvotes-button:hover{
+    background-color: white;
+    color:blue;
+}
