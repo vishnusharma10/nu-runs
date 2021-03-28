@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
 const CommentList = ({article})=>{
    console.log(article.comments);
@@ -10,7 +9,7 @@ const CommentList = ({article})=>{
    },[article.comments])
    return (
    <>
-   <h2>name</h2>
+   <h3>Comments</h3>
    { comments !== undefined ? comments.map((comment,key)=>{
         return <div key={key}>
             <h3>{comment.readerName}</h3>

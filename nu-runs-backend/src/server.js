@@ -8,28 +8,32 @@ import {
 } from "mongodb";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-
+import cookieParser from "cookie-parser";
+import cors from "cors";
 const saltrounds = 10;
 
 const app = express();
+//declaring port number
+const port = process.env.PORT || 8000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+//This will parse body to req.body
+
+app.use(express.json());
+app.use(express.urlencoded({
     extended: true
 }));
+//this will parse to cookies to req.cookies
+app.use(cookieParser());
 
-// Add Access Control Allow Origin headers
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
+app.use(cors({
+    origin:["http://localhost:3000"],
+    credentials:true
+}));
 
 
 const userSchema = mongoose.Schema({
+    firstname:String,
+    lastname:String,
     username: String,
     password: String,
     //0 for Trainer and 1 for Trainee
@@ -45,91 +49,95 @@ const articleSchema = mongoose.Schema({
     upvotes: Number,
     comments: [String],
     author: String
-})
+});
 
-const User = new mongoose.model("User", userSchema);
 const Article = new mongoose.model("Article", articleSchema);
 
-const withDB = async (operations) => {
-    try {
-        const client = await MongoClient.connect("mongodb://localhost:27017", {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        const db = client.db("nuruns");
-        await operations(db);
+//connection with mongodb databaase
 
-    } catch (err) {
-       console.log("Error")
-    }
-
-}
-
-app.get("/login", function (req, res) {
-    res.send("Login Here");
+mongoose.connect(process.env.MDB_CONNECT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 
-app.post("/login", function (req, res) {
-    const username = req.body.username;
-    const password = req.body.password;
+//Get the default connection
+var db = mongoose.connection;
 
-    withDB((db) => {
-        db.collection("users").findOne({
-            "username": username
-        }, function (err, foundUser) {
-            if (err) return console.log(err);
-            else {
-                if (foundUser) {
-                    bcrypt.compare(password, foundUser.password, function (err, result) {
-                        if (err) return console.log(err);
-                        else if (result === true) {
-                            res.send("Hey you logged in recently")
-                        }
-                    });
-                }
-            }
-        })
-    })
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-});
-app.get("/register", function (req, res) {
-    res.send("Register Here");
-});
-
-app.post("/register", function (req, res) {
-    const password = req.body.password;
-    const username = req.body.username;
-    withDB(async (db) => {
-        bcrypt.hash(password, saltrounds, async (err, hash) => {
-            const existingUser = await db.collection("users").findOne({
-                username: username
-            });
-            const newUser = new User({
-                username: username,
-                password: hash,
-                userType: 1,
-                active: false
-            });
-            console.log(newUser);
-            if (!existingUser) {
-                db.collection("users").insertOne(newUser, function (err, data) {
-                    if (err) return console.log(err);
-                    res.send("Registration Successful");
-                });
-            } else {
-                res.send("User Already exists with that email")
-            }
-
-        });
-    })
+app.use("/auth",require("../routers/userRouter"));
 
 
-});
+// app.get("/login", function (req, res) {
+//     res.send("Login Here");
+// });
+
+// app.post("/login", function (req, res) {
+//     const username = req.body.username;
+//     const password = req.body.password;
+
+//     withDB((db) => {
+//         db.collection("users").findOne({
+//             "username": username
+//         }, function (err, foundUser) {
+//             if (err) return console.log(err);
+//             else {
+//                 if (foundUser) {
+//                     bcrypt.compare(password, foundUser.password, function (err, result) {
+//                         if (err) return console.log(err);
+//                         else if (result === true) {
+//                             res.send("Hey you logged in recently")
+//                         }
+//                     });
+//                 }
+//             }
+//         })
+//     })
+
+// });
+
+// app.get("/register", function (req, res) {
+//     res.send("Register Here");
+// });
+
+// app.post("/register", function (req, res) {
+//     const password = req.body.password;
+//     const username = req.body.username;
+//     const firstname = req.body.firstname;
+//     const lastname = req.body.lastname;
+
+//     withDB(async (db) => {
+//         bcrypt.hash(password, saltrounds, async (err, hash) => {
+//             const existingUser = await db.collection("users").findOne({
+//                 username: username
+//             });
+//             const newUser = new User({
+//                 firstname:firstname,
+//                 lastname:lastname,
+//                 username: username,
+//                 password: hash,
+//                 userType: 1,
+//                 active: false
+//             });
+//             console.log(newUser);
+//             if (!existingUser) {
+//                 db.collection("users").insertOne(newUser, function (err, data) {
+//                     if (err) return console.log(err);
+//                     res.status(200).json({status:200,"message":"Registration Successful",isthere:"nope"});
+//                 });
+//             } else {
+//                 res.status(200).json({status:200,message:"User Already exists with that email",isthere:"exists"})
+//             }
+
+//         });
+//     })
+
+
+// });
 
 app.get("/api/all-articles",async(req,res)=>{
-
-    withDB(async(db)=>{
-        await db.collection("articles").find({}).toArray().then((ans)=>{
+       await  db.collection("articles").find({}).toArray().then((ans)=>{
             let articles = {};
             const key = "all-articles";
             articles[key] = [];
@@ -139,29 +147,28 @@ app.get("/api/all-articles",async(req,res)=>{
         });
         
 
-    });
 });
 
 app.get("/api/all-articles/:name", async (req, res) => {
-    withDB(async (db) => {
+
         const articleName = req.params.name;
         const articleInfo = await db.collection("articles").findOne({
             name: articleName
         });
+        console.log(articleInfo);
         res.status(200).send(articleInfo);
-    });
+
 });
 
 app.post("/api/all-articles/:name/upvote", async (req, res) => {
 
-    withDB(async (db) => {
         const articleName = req.params.name;
 
         const articleInfo = await db.collection("articles").findOne({
             name: articleName
         });
 
-        await db.collection("articles").updateOne({
+     await  db.collection("articles").updateOne({
             name: articleName
         }, {
             "$set": {
@@ -172,13 +179,12 @@ app.post("/api/all-articles/:name/upvote", async (req, res) => {
             name: articleName
         });
         res.status(200).json(updatedArticleInfo);
-    });
+
 
 });
 
 app.post("/api/all-articles/:name/comment", async (req, res) => {
 
-    withDB(async (db) => {
         const articleName = req.params.name;
         const {
             readerName,
@@ -188,7 +194,7 @@ app.post("/api/all-articles/:name/comment", async (req, res) => {
         const articleInfo = await db.collection("articles").findOne({
             name: articleName
         });
-        await db.collection("articles").updateOne({
+      await  db.collection("articles").updateOne({
             name: articleName
         }, {
             "$set": {
@@ -203,13 +209,12 @@ app.post("/api/all-articles/:name/comment", async (req, res) => {
             name: articleName
         });
         res.status(200).json(updatedArticleInfo);
-    })
 
 });
 
 
 app.post("/api/all-articles/create", async (req, res) => {
-    withDB((db) => {
+
         const articleTitle = req.body.title;
         const articleContnet = req.body.content;
         const articleComments = req.body.comments;
@@ -226,10 +231,11 @@ app.post("/api/all-articles/create", async (req, res) => {
             name:articleName
         })
 
-        db.collection("articles").insertOne(newArticle,(err,article)=>{
+        await db.collection("articles").insertOne(newArticle,(err,article)=>{
             if(err) return console.log(err);
             res.send("Article Inserted");
         })
-    });
+
 });
-app.listen(8000, () => console.log("Listening on port 8000"), );
+
+app.listen(port, () => console.log(`Listening on port ${port}`));

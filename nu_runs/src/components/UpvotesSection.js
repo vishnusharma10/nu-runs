@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import "../css/upvotes.css";
 
 const UpvotesSection= ({upvotes,setArticleInfo,articleName})=>{
 
@@ -11,8 +12,8 @@ const UpvotesSection= ({upvotes,setArticleInfo,articleName})=>{
         setArticleInfo(updatedArticle);
     }
     return <div>
-        <button onClick={addUpvotes}>Add Upvote</button>
-        <p>This article has {upvotes} upvotes</p>
+        <button id="upvotes-button"onClick={addUpvotes}>Add Upvote</button><br></br>
+        <p>This article has <strong>{upvotes} </strong> upvotes</p>
     </div>
 }
 export default UpvotesSection;

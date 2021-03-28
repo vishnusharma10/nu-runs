@@ -12,7 +12,6 @@ const ArticlesListPage = ()=>{
     const fetchData = async()=>{
         const result = await axios.get("http://localhost:8000/api/all-articles");
         const articles = result.data.data["all-articles"]
-        console.log(articles);
         setArticles(articles);
     }
 

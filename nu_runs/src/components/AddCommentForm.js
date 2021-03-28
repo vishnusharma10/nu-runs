@@ -1,5 +1,6 @@
 import axios from "axios";
 import React,{useState} from "react";
+import "../css/comments.css";
 
 const AddCommentForm = ({articleName,setArticleInfo})=>{
     const [username,setUserName] = useState("");
@@ -19,11 +20,14 @@ const AddCommentForm = ({articleName,setArticleInfo})=>{
             Name:
             <input type="text" value={username} onChange={(event)=>{setUserName(event.target.value)}}></input>
         </label>
+        <br></br>
         <label>
             Comment:
             <textarea rows="5"cols="50" value={comment} onChange={(event)=>setComment(event.target.value)}></textarea>
         </label>
-        <button onClick={addComment}>Add Comment</button>
+        <br></br>
+        <button id="comments-button"onClick={addComment}>Add Comment</button>
+        <br></br>
     </div>
 }
 export default AddCommentForm;
