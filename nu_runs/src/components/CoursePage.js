@@ -3,9 +3,7 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/ico
 
 const CourseCard = ({courseLink,courseTitle})=>{
 
-    const getEnrolled=(userId,courseLink,courseTitle)=>{
-
-    }
+    
     return <div class="col-md-6 col-lg-4" style={{display:"inline-block",textAlign:"center"}}>
     <div>
       <div class="speaker">
@@ -27,7 +25,7 @@ const CourseCard = ({courseLink,courseTitle})=>{
         <h5 style={{display:"inline-block"}}>
           <p>{courseTitle}</p>
         </h5>
-        <button>Enroll</button>
+      
       </div>
     </div>
     </div>;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import axios from "axios";
 
+
 import ChallengeCard from "../components/ChallengeCard";
 import { Jumbotron } from "react-bootstrap";
 

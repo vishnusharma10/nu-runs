@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import axios from "axios";
 
 import { Jumbotron } from "react-bootstrap";
-import CoursesList from "../components/CoursesCards";
+import CoursesList from "../components/CoursesList";
 
 const CoursesPage = () => {
   const [newCourses, setNewCourses] = useState([]);

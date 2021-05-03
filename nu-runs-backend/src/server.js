@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { ObjectId } from "mongodb";
 import multer from "multer";
+import { listenerCount } from "../models/userModel";
 var fs = require("fs");
 var path = require("path");
 var assert = require("assert");
@@ -229,54 +230,82 @@ app.post("/api/profile/:userId/upload-profile", (req, res) => {
 });
 
 //get enrolled in course
-app.post("/api/profile/:userId/course-enroll/:courseId", (req, res) => {
+app.post("/api/profile/course-enroll/:userId/:courseId", async (req, res) => {
   const userId = req.params.userId;
   const courseId = req.params.courseId;
 
-  const newUserData = UserData.find({ userId: ObjectId(userId) });
-  if (!newUserData) {
-    newUserData["enrolledCourses"].push(ObjectId(courseId));
+  let newUserData = await db
+    .collection("userdata")
+    .findOne({ userId: ObjectId(userId) });
+
+  if (newUserData) {
+    await db.collection("userdata").updateOne(
+      { userId: ObjectId(userId) },
+      {
+        $set: {
+          enrolledCourses: newUserData.enrolledCourses.concat([
+            ObjectId(courseId),
+          ]),
+        },
+      }
+    );
   } else {
-    const newUserData = new UserData();
-    newUserData["userId"] = ObjectId(userId);
+    newUserData = new UserData({
+      userId: ObjectId(userId),
+    });
+    newUserData["enrolledCourses"] = [];
     newUserData["enrolledCourses"].push(ObjectId(courseId));
+
+    await db.collection("userdata").insertOne(newUserData, (err, data) => {
+      if (err) return console.log(err);
+      res.json(newUserData);
+    });
   }
 });
 
 //get enrolled in challenges
-app.post("/api/profile/:userId/challenge-enroll/:challengeId", (req, res) => {
-  const userId = req.params.userId;
-  const challengeId = req.params.challengeId;
-  const message = "";
-  const newUserData = userData.find({ userId: ObjectId(userId) });
-  const newChallenge = Challenge.findById({_id:ObjectId(challengeId)});
-  if(newChallenge){
-    if(ObjectId(userId) in newChallenge["participants"]){
-      message += "Enrollement exists ";
-      console.log();
-    }
-    else {
-      newChallenge["participants"].push(ObjectId(userId));
-    }
-    
-  }
+app.post(
+  "/api/profile/challenge-enroll/:userId/:challengeId",
+  async (req, res) => {
+    const userId = req.params.userId;
+    const challengeId = req.params.challengeId;
 
-  if (newUserData) {
-    if (ObjectId(challengeId) in newUserData["enrolledChallenges"]) {
-      message  += "Already Enrolled";
-      console.log();
+    let newUserData = await db
+      .collection("userdata")
+      .findOne({ userId: ObjectId(userId) });
+    console.log(newUserData);
+    if (newUserData) {
+      await db.collection("userdata").updateOne(
+        { userId: ObjectId(userId) },
+        {
+          $set: {
+            enrolledChallenges: newUserData.enrolledChallenges.concat([
+              ObjectId(challengeId),
+            ]),
+          },
+        }
+      );
+
     } else {
+      newUserData = new UserData({
+        userId: ObjectId(userId),
+      });
+      newUserData["enrolledChallenges"] = [];
       newUserData["enrolledChallenges"].push(ObjectId(challengeId));
-    }
-  } else {
-    const newUserData = new UserData();
-    newUserData["userId"] = ObjectId(userId);
-    newUserData["enrolledChallenges"].push(ObjectId(challengeId));
-    
-  }
 
-  res.send(message);
-});
+      await db.collection("userdata").insertOne(newUserData, (err, data) => {
+        if (err) return console.log(err);
+        res.json(newUserData);
+      });
+    
+    }
+
+    let challenges = await db.collection("challenges").find({});
+    for (let i = 0; i < challenges.length; i++) {
+      console.log(challenges[i]);
+    }
+  }
+);
 
 app.get("/api/challenges/challenge-img/:id", async (req, res) => {
   const id = req.params.id;

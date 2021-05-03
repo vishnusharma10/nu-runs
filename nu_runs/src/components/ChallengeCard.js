@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 const ChallengeCard = ({challenge,distance,challengeType,id}) => {
-    const getEnrolled = ()=>{
-      
+    const getEnrolled = async(userId, challengeId)=>{
+      console.log(userId, challengeId);
+      const result = await axios.post("http://localhost:8000/api/profile/challenge-enroll/"+userId+"/"+challengeId);
+      console.log(result.data);
+    
     }
     const [imgUrl, setImgUrl] = useState("");
-
+    const [userId, setUserId] = useState("");
     const fetchChallengeImage = async(id)=>{
       const result = await axios.get("http://localhost:8000/api/challenges/challenge-img/"+id,{ responseType: 'arraybuffer' });
       let image = btoa(
@@ -17,6 +20,11 @@ const ChallengeCard = ({challenge,distance,challengeType,id}) => {
     }
 
     useEffect(()=>{
+      const getUserId = async()=>{
+        const result = await axios.get("http://localhost:8000/auth");
+        setUserId(result.data.id);
+      }
+      getUserId();
       fetchChallengeImage(id);
     },[])
     
@@ -39,7 +47,7 @@ const ChallengeCard = ({challenge,distance,challengeType,id}) => {
               <p>{distance} KM Run</p>
             </h5>
             <p class="speaker-position">{challengeType} Challenge</p>
-            <button onClick={getEnrolled}>Enroll</button>
+            <button onClick={()=>getEnrolled(userId,id)}>Enroll</button>
           </div>
         </div>
       </div>
