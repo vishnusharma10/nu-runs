@@ -24,7 +24,7 @@ const fetchData = async()=>{
         
             {newCourses.map((course, key) => {
               console.log(course);
-              return <CoursesList courses={course.coursesUrls} courseTitle={course.title}>
+              return <CoursesList courses={course.coursesUrls} courseTitle={course.title} id={course._id}>
                 
               </CoursesList>
             })}

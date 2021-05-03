@@ -1,7 +1,7 @@
 import { Card} from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 
-const CourseCard = ({courseLink,courseTitle})=>{
+const CourseCard = ({courseLink,courseTitle,id})=>{
 
     
     return <div class="col-md-6 col-lg-4" style={{display:"inline-block",textAlign:"center"}}>

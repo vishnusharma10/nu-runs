@@ -229,13 +229,34 @@ app.post("/api/profile/:userId/upload-profile", (req, res) => {
   const userId = req.params.userId;
 });
 
+app.get("/api/profile/enrolled-courses/:userId",async(req,res)=>{
+  const userId = req.params.userId;
+
+  const newUserData = await db
+    .collection("userdata")
+    .findOne({ userId: ObjectId(userId)});
+
+    res.send(newUserData.enrolledCourses);
+  
+})
+
+app.get("/api/profile/enrolled-challenges/:userId",async(req,res)=>{
+  const userId = req.params.userId;
+
+  const newUserData = await db
+    .collection("userdata")
+    .findOne({ userId: ObjectId(userId)});
+
+    res.send(newUserData.enrolledChallenges);
+  
+})
+
 //get enrolled in course
 app.post("/api/profile/course-enroll/:userId/:courseId", async (req, res) => {
   const userId = req.params.userId;
   const courseId = req.params.courseId;
 
-  let newUserData = await db
-    .collection("userdata")
+  let newUserData = await db.collection("userdata")
     .findOne({ userId: ObjectId(userId) });
 
   if (newUserData) {
@@ -285,7 +306,6 @@ app.post(
           },
         }
       );
-
     } else {
       newUserData = new UserData({
         userId: ObjectId(userId),
@@ -297,7 +317,6 @@ app.post(
         if (err) return console.log(err);
         res.json(newUserData);
       });
-    
     }
 
     let challenges = await db.collection("challenges").find({});
