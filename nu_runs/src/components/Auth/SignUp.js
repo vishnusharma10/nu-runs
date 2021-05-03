@@ -60,7 +60,7 @@ export default function SignUp() {
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("");
   const [error,setError] = useState();
-  const {setUserData} = useContext(userContext);
+  const {userData, setUserData} = useContext(userContext);
   const history = useHistory();
 
   const registerUser = async (
@@ -122,7 +122,7 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar} style={{ backgroundColor: "blue" }}>
+        <Avatar className={classes.avatar} style={{ backgroundColor: "#3c6e71" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -225,13 +225,14 @@ export default function SignUp() {
               </div>
             </Grid>
           </Grid>
+          
           <Button
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
             onClick={() => registerUser(firstname, lastname, email, password,passwordVerify,userType)}
-            style={{ backgroundColor: "blue" }}
+            style={{ backgroundColor: "#3c6e71" }}
           >
             Sign Up
           </Button>

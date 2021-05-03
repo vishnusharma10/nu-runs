@@ -12,7 +12,7 @@ const UpvotesSection= ({upvotes,setArticleInfo,articleName})=>{
         setArticleInfo(updatedArticle);
     }
     return <div>
-        <button id="upvotes-button"onClick={addUpvotes}>Add Upvote</button><br></br>
+        <button style={{backgroundColor:"#3c6e71"}}id="upvotes-button"onClick={addUpvotes}>Add Upvote</button><br></br>
         <p>This article has <strong>{upvotes} </strong> upvotes</p>
     </div>
 }

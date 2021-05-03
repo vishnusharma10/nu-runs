@@ -16,8 +16,11 @@ const ArticlesListPage = ()=>{
     }
 
     return( <React.Fragment>
-       <h1>Articles</h1>
+        <div style={{textAlign:"center"}}>
+        <h1>Articles</h1>
        <ArticleList articles={articles}></ArticleList>
+        </div>
+       
    </React.Fragment>);
 }
 export default ArticlesListPage;

@@ -1,0 +1,40 @@
+.topjumbo{
+    background-color:white;
+    text-align: center;
+    color: #3c6e71;
+    margin-top:50px;
+
+}
+.topjumbo button{
+    margin-top: 50px;
+    border-radius: 50px;
+    border: 1px solid white;
+    width: 150px;
+    height: 50px;
+    color: #3c6e71;
+}
+.wackadoodle{
+    width: 25rem;
+    border: none;
+    padding: 20px; 
+    text-align: center;
+    color: #3c6e71;
+    margin-top:100px;
+}
+
+.topjumbo h1{
+    font-size: 5rem;
+}
+.secondJumbo{
+    background-color:white;
+    text-align: center;
+    color: #284b67;
+    margin-top:50px;
+
+}
+.secondJumbo h1{
+    font-size: 60px;
+}
+hr.solid {
+    border-top: 3px solid #bbb;
+  }

@@ -1,0 +1,28 @@
+
+div.center-cropped img {
+    width: 150px;
+    height: 100px;
+    object-fit: contain;
+  }
+  
+    /* Style the links inside the navigation bar */
+    .link {
+      color: #284B63;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    
+    /* Change the color of links on hover */
+    .link:hover {
+      background-color: #ddd;
+      color: #284B63;
+    }
+    .xplaineranav button{
+      border-radius: 50px;
+      border: 1px solid #3c6371;
+      width: 150px;
+      height: 50px;
+      color: #3c6e71;
+    }
+    

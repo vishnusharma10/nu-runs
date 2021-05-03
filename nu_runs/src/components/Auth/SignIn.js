@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
-import userContext from '../../context/userContext';
+import UserContext from '../../context/userContext';
 import { useHistory } from 'react-router';
 
 function Copyright() {
@@ -55,12 +55,14 @@ export default function SignIn() {
   const [email, setemail] = useState("");
   const [password,setPassword] = useState("");
   const [error,setError] = useState("")
-  const {setUserData} = useContext(userContext)
+  const {userData,setUserData} = useContext(UserContext)
   const history = useHistory();
 
   const loginUser = async(email,password)=>{
       const result = await axios.post("http://localhost:8000/auth/login",
       {email:email,password:password});
+      console.log(result.data);
+      setUserData({token:result.data.token,user:result.data.user});
       history.push("/profile");
       setemail("");
       setPassword("");
@@ -71,7 +73,7 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar} style={{"backgroundColor":"blue"}}>
+        <Avatar className={classes.avatar} style={{"backgroundColor":"#3c6e71"}}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -114,7 +116,7 @@ export default function SignIn() {
             color="primary"
             onClick={()=>loginUser(email,password)}
             className={classes.submit}
-            style={{"backgroundColor":"blue"}}
+            style={{"backgroundColor":"#3c6e71"}}
           >
             Sign In
           </Button>

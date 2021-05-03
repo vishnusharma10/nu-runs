@@ -15,8 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import UserContext from "../context/userContext";
+import axios from "axios";
 // reactstrap components
 import {
   Button,
@@ -26,17 +28,50 @@ import {
   Container,
   Row,
   Col,
+  Jumbotron,
 } from "react-bootstrap";
 // core components
 import UserHeader from "../components/UserHeader.js";
 
 const Profile = () => {
+  const { userData } = useContext(UserContext);
+  const history = useHistory();
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setlastName] = useState("");
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    const getCookie = async () => {
+      const result = await axios.get("http://localhost:8000/auth");
+      const userInfo = await axios.post("http://localhost:8000/api/profile", {
+        id: result.data.id,
+      });
+      setFirstName(userInfo.data.userInfo.firstname);
+      setlastName(userInfo.data.userInfo.lastname);
+      setEmail(userInfo.data.userInfo.email);
+    };
+    if (!userData.user) history.push("/login");
+    getCookie();
+  }, [userData, firstname]);
+
   return (
     <>
-      <UserHeader />
+      <UserHeader firstname={firstname} />
       {/* Page content */}
       <br></br>
       <Container className="mt--7" fluid>
+        <Row>
+          Courses Enrolled
+          <Jumbotron>
+            <Col></Col>
+          </Jumbotron>
+        </Row>
+        <Row>
+          On-Going Challenges
+          <Jumbotron>
+            <Col>
+            </Col>
+          </Jumbotron>
+        </Row>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
@@ -47,82 +82,24 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        style={{width:"100px",height:"100px"}}
-                        src={
-                          require("../assets/img/theme/team-4-800x800.jpg")
-                        }
+                        style={{ width: "100px", height: "100px" }}
+                        src={require("../assets/img/theme/team-4-800x800.jpg")}
                       />
                     </a>
                   </div>
                 </Col>
               </Row>
-              <Card.Header className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Connect
-                  </Button>
-                  <Button
-                    className="float-right"
-                    color="default"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Message
-                  </Button>
-                </div>
-              </Card.Header>
               <Card.Body className="pt-0 pt-md-4">
-                <Row>
-                  <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                      <div>
-                        <span className="heading">22</span>
-                        <span className="description">Friends</span>
-                      </div>
-                      <div>
-                        <span className="heading">10</span>
-                        <span className="description">Photos</span>
-                      </div>
-                      <div>
-                        <span className="heading">89</span>
-                        <span className="description">Comments</span>
-                      </div>
-                    </div>
-                  </div>
-                </Row>
                 <div className="text-center">
-                  <h3>
-                    Jessica Jones
-                    <span className="font-weight-light">, 27</span>
-                  </h3>
+                  <h3>{firstname}</h3>
                   <div className="h5 font-weight-300">
                     <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
+                    India
                   </div>
                   <div className="h5 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Creative Tim Officer
-                  </div>
-                  <div>
-                    <i className="ni education_hat mr-2" />
-                    University of Computer Science
                   </div>
                   <hr className="my-4" />
-                  <p>
-                    Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                    Nick Murphy — writes, performs and records all of his own
-                    music.
-                  </p>
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Show more
-                  </a>
                 </div>
               </Card.Body>
             </Card>
@@ -164,6 +141,7 @@ const Profile = () => {
                           <input
                             className="form-control-alternative"
                             defaultValue="lucky.jesse"
+                            value={firstname + lastname}
                             id="input-username"
                             placeholder="Username"
                             type="text"
@@ -182,6 +160,7 @@ const Profile = () => {
                             className="form-control-alternative"
                             id="input-email"
                             placeholder="jesse@example.com"
+                            value={email}
                             type="email"
                           />
                         </FormGroup>
@@ -201,6 +180,7 @@ const Profile = () => {
                             defaultValue="Lucky"
                             id="input-first-name"
                             placeholder="First name"
+                            value={firstname}
                             type="text"
                           />
                         </FormGroup>
@@ -218,6 +198,7 @@ const Profile = () => {
                             defaultValue="Jesse"
                             id="input-last-name"
                             placeholder="Last name"
+                            value={lastname}
                             type="text"
                           />
                         </FormGroup>
