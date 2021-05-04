@@ -19,6 +19,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import UserContext from "../context/userContext";
 import axios from "axios";
+import CoursesList from "../components/CoursesList";
+import EnrolledChallengeCard from "../components/EnrolledChallengeCard";
 // reactstrap components
 import {
   Button,
@@ -39,6 +41,24 @@ const Profile = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setlastName] = useState("");
   const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+
+  const [enrolledChallenges, setEnrolledChallenges] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const fetchChallenges = async (userId) => {
+    const result = await axios.get(
+      "http://localhost:8000/api/profile/enrolled-challenges/" + userId
+    );
+    console.log(result.data.challenges)
+    setEnrolledChallenges(result.data.challenges);
+  };
+  const fetchCourses = async (userId) => {
+    const result = await axios.get(
+      "http://localhost:8000/api/profile/enrolled-courses/" + userId
+    );
+    console.log(result.data.courses);
+    setEnrolledCourses(result.data.courses);
+  };
   useEffect(() => {
     const getCookie = async () => {
       const result = await axios.get("http://localhost:8000/auth");
@@ -48,10 +68,13 @@ const Profile = () => {
       setFirstName(userInfo.data.userInfo.firstname);
       setlastName(userInfo.data.userInfo.lastname);
       setEmail(userInfo.data.userInfo.email);
+      setUserId(result.data.id);
     };
     if (!userData.user) history.push("/login");
-    getCookie();
-  }, [userData, firstname]);
+    getCookie(userId);
+    fetchChallenges(userId);
+    fetchCourses(userId);
+  }, [userData, firstname, userId]);
 
   return (
     <>
@@ -60,15 +83,42 @@ const Profile = () => {
       <br></br>
       <Container className="mt--7" fluid>
         <Row>
-          Courses Enrolled
+          <h2>Courses Enrolled</h2>
           <Jumbotron>
-            <Col></Col>
+
+            {enrolledCourses !== undefined ? enrolledCourses.map((course, key) => {
+              console.log(course);
+              return (
+                <CoursesList
+                  courses={course.coursesUrls}
+                  courseTitle={course.title}
+                  id={course._id}
+                ></CoursesList>
+              );
+            }):console.log("No Courses found")}
           </Jumbotron>
         </Row>
         <Row>
-          On-Going Challenges
+          <h2> On-Going Challenges </h2>
           <Jumbotron>
             <Col>
+            {enrolledChallenges !== undefined ? enrolledChallenges.map((challenge, key) => {
+              if (challenge !== null) {
+
+                return (
+                  <EnrolledChallengeCard
+                    key={key}
+                    challenge={challenge["img"]}
+                    distance={challenge["distance"]}
+                    challengeType={challenge["challengeType"]}
+                    id={challenge["_id"]}
+                  ></EnrolledChallengeCard>
+                );
+              } else {
+                return <h1>No Challenge Found</h1>;
+              }
+            }):console.log("No Challenges enrolled")}
+
             </Col>
           </Jumbotron>
         </Row>

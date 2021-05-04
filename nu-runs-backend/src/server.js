@@ -229,34 +229,59 @@ app.post("/api/profile/:userId/upload-profile", (req, res) => {
   const userId = req.params.userId;
 });
 
-app.get("/api/profile/enrolled-courses/:userId",async(req,res)=>{
+app.get("/api/profile/enrolled-courses/:userId", async (req, res) => {
   const userId = req.params.userId;
-
+  const enrolledCourses = {};
+  const coursesList = [];
   const newUserData = await db
     .collection("userdata")
-    .findOne({ userId: ObjectId(userId)});
+    .findOne({ userId: ObjectId(userId) });
 
-    res.send(newUserData.enrolledCourses);
-  
-})
+  for (let i = 0; i < newUserData.enrolledCourses.length; i++) {
+    const newCourse = await Course.findById({ _id: newUserData.enrolledCourses[i] });
+    
+    if (newCourse) {
+      coursesList.push(newCourse);
+    } else {
+      console.log("No enrolled courses found");
+    }
+  }
 
-app.get("/api/profile/enrolled-challenges/:userId",async(req,res)=>{
+  enrolledCourses["courses"] = coursesList;
+  res.send(enrolledCourses);
+});
+
+app.get("/api/profile/enrolled-challenges/:userId", async (req, res) => {
   const userId = req.params.userId;
-
+  const enrolledChallenges = {};
+  const challengesList = [];
+  console.log(userId);
   const newUserData = await db
     .collection("userdata")
-    .findOne({ userId: ObjectId(userId)});
+    .findOne({ userId: ObjectId(userId) });
+  console.log(newUserData);
+  for (let i = 0; i < newUserData.enrolledChallenges.length; i++) {
+    console.log(i);
+    const newChallenge = await Challenge.findById({ _id: newUserData.enrolledChallenges[i] });
+    if (newChallenge) {
+      challengesList.push(newChallenge);
+    } else {
+      console.log("No enrolled courses found");
+    }
+  }
 
-    res.send(newUserData.enrolledChallenges);
-  
-})
+  enrolledChallenges["challenges"] = challengesList;
+
+  res.send(enrolledChallenges);
+});
 
 //get enrolled in course
 app.post("/api/profile/course-enroll/:userId/:courseId", async (req, res) => {
   const userId = req.params.userId;
   const courseId = req.params.courseId;
 
-  let newUserData = await db.collection("userdata")
+  let newUserData = await db
+    .collection("userdata")
     .findOne({ userId: ObjectId(userId) });
 
   if (newUserData) {

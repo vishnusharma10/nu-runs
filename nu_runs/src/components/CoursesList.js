@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { Card, Col, Jumbotron, Row } from "react-bootstrap";
-import CourseCard from "./CoursePage";
+import CourseCard from "./CourseCard";
 
 const CoursesList = ({ courses, courseTitle, id }) => {
   const [userId, setUserId] = useState("");
