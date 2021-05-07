@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import { Row } from "react-bootstrap";
+
 import CourseCard from "./CourseCard";
 
+
 const CoursesList = ({ courses, courseTitle, id }) => {
+
+  const [courseEnrolled, setCourseEnrolled] = useState(false)
+  
   const [userId, setUserId] = useState("");
   const [coursesLoaded, setCoursesLoadee] = useState(false);
 
