@@ -24,6 +24,7 @@ import EnrolledChallengeCard from "../components/EnrolledChallengeCard";
 import BackgroundImage from "../assets/img/theme/profile-cover.jpg";
 import "../css/profile.css";
 import ProfilePic from "../assets/img/theme/team-4-800x800.jpg";
+import Loader from "react-loader-spinner";
 // reactstrap components
 import {
   Button,
@@ -48,20 +49,28 @@ const Profile = () => {
 
   const [enrolledChallenges, setEnrolledChallenges] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+  const [challengesLoaded, setChallengesLoadee] = useState(false);
+  const [coursesLoade, setCoursesLoaded] = useState(false);
+
   const fetchChallenges = async (userId) => {
     const result = await axios.get(
       "http://localhost:8000/api/profile/enrolled-challenges/" + userId
     );
     console.log(result.data.challenges);
     setEnrolledChallenges(result.data.challenges);
+    setChallengesLoadee(true);
   };
+
   const fetchCourses = async (userId) => {
     const result = await axios.get(
       "http://localhost:8000/api/profile/enrolled-courses/" + userId
     );
     console.log(result.data.courses);
     setEnrolledCourses(result.data.courses);
+    setCoursesLoaded(true);
   };
+
   useEffect(() => {
     const getCookie = async () => {
       const result = await axios.get("http://localhost:8000/auth");
@@ -77,7 +86,7 @@ const Profile = () => {
     getCookie(userId);
     fetchChallenges(userId);
     fetchCourses(userId);
-  }, [userData, firstname, userId]);
+  }, [userData, firstname, lastname, userId, history]);
 
   return (
     <>
@@ -96,23 +105,33 @@ const Profile = () => {
         <br></br>
         <Container className="mt--7" fluid>
           <Row>
-            <Col>
-              <h2>Courses Enrolled</h2>
-              {enrolledCourses !== undefined ? (
-                enrolledCourses.map((course, key) => {
-                  console.log(course);
-                  return (
-                    <CoursesList
-                      courses={course.coursesUrls}
-                      courseTitle={course.title}
-                      id={course._id}
-                    ></CoursesList>
-                  );
-                })
-              ) : (
-                <h6>No Courses Enrolled</h6>
-              )}
-            </Col>
+            {coursesLoade ? (
+              <Col>
+                <h2>Courses Enrolled</h2>
+                {enrolledCourses !== undefined ? (
+                  enrolledCourses.map((course, key) => {
+                    console.log(course);
+                    return (
+                      <CoursesList
+                        courses={course.coursesUrls}
+                        courseTitle={course.title}
+                        id={course._id}
+                      ></CoursesList>
+                    );
+                  })
+                ) : (
+                  <h6>No Courses Enrolled</h6>
+                )}
+              </Col>
+            ) : (
+              <Loader
+                type="Puff"
+                color="#284B63"
+                height={100}
+                width={100}
+                timeout={5000} //5 secs
+              />
+            )}
           </Row>
           <div
             style={{
@@ -123,28 +142,38 @@ const Profile = () => {
             }}
           ></div>
           <Row>
-            <Col style={{ paddingBottom: "40px" }}>
-              <h2> On-Going Challenges </h2>
-              {enrolledChallenges !== undefined ? (
-                enrolledChallenges.map((challenge, key) => {
-                  if (challenge !== null) {
-                    return (
-                      <EnrolledChallengeCard
-                        key={key}
-                        challenge={challenge["img"]}
-                        distance={challenge["distance"]}
-                        challengeType={challenge["challengeType"]}
-                        id={challenge["_id"]}
-                      ></EnrolledChallengeCard>
-                    );
-                  } else {
-                    return <h6>No Challenge Found</h6>;
-                  }
-                })
-              ) : (
-                <h6>No Challenges enrolled</h6>
-              )}
-            </Col>
+            {challengesLoaded ? (
+              <Col style={{ paddingBottom: "40px" }}>
+                <h2> On-Going Challenges </h2>
+                {enrolledChallenges !== undefined ? (
+                  enrolledChallenges.map((challenge, key) => {
+                    if (challenge !== null) {
+                      return (
+                        <EnrolledChallengeCard
+                          key={key}
+                          challenge={challenge["img"]}
+                          distance={challenge["distance"]}
+                          challengeType={challenge["challengeType"]}
+                          id={challenge["_id"]}
+                        ></EnrolledChallengeCard>
+                      );
+                    } else {
+                      return <h6>No Challenge Found</h6>;
+                    }
+                  })
+                ) : (
+                  <h6>No Challenges enrolled</h6>
+                )}
+              </Col>
+            ) : (
+              <Loader
+                type="Puff"
+                color="#284B63"
+                height={100}
+                width={100}
+                timeout={5000} //5 secs
+              />
+            )}
           </Row>
           <Row>
             <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
@@ -189,8 +218,7 @@ const Profile = () => {
                     </Col>
                     <Col className="text-right" xs="4">
                       <button
-                        style={{backgroundColor:"#284B63",color:"white"}}
-                       
+                        style={{ backgroundColor: "#284B63", color: "white" }}
                         href="#pablo"
                         onClick={(e) => e.preventDefault()}
                       >

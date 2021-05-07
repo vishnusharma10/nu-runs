@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Jumbotron, Row, Col, Card } from "react-bootstrap";
-import { Link } from "react-dom";
 import NuRuns from "../assets/img/nuruns.png";
 import BackgroundImage from "../assets/img/theme/profile-cover.jpg";
 const AboutPage = () => (

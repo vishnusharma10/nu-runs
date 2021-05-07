@@ -7,9 +7,6 @@ import CourseCard from "./CourseCard";
 
 
 const CoursesList = ({ courses, courseTitle, id }) => {
-
-  const [courseEnrolled, setCourseEnrolled] = useState(false)
-  
   const [userId, setUserId] = useState("");
   const [coursesLoaded, setCoursesLoadee] = useState(false);
 
@@ -56,6 +53,7 @@ const CoursesList = ({ courses, courseTitle, id }) => {
           >
             <strong>Enroll</strong>
           </button>
+          
         </div>
 
         {coursesLoaded ? (
