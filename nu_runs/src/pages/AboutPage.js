@@ -1,7 +1,15 @@
 import React from "react";
+import { Container, Jumbotron, Row, Col,Card } from "react-bootstrap";
+import {Link} from "react-dom";
+import NuRuns from "../assets/img/nuruns.png";
 
 const AboutPage = () => (
   <React.Fragment>
+    <Container>
+    <Row>
+  <Col xs = {12} md = {8} lg={8}>
+    <div>
+    <Jumbotron>
     <h1>About Us</h1>
     <p>
       nu_runs is a student led college fitness initiative that was launched by
@@ -14,7 +22,7 @@ const AboutPage = () => (
       ourselves to carry on uninterrupted in our goal towards health for all.
     </p>
     <h3>Roles and Deliverables :</h3>
-    <ul>
+    <ul style={{listStyle:"none"}}>
         <li>Provide guidance to potential runners on running techniques including breathing control  (like Box breathing), stretching, proper warm-up and cool down sessions before and after run  respectively.</li>
         <li>Enhance physical fitness that is evidently being neglected in coming generations.</li>
         <li>Provide guidance for strength building and weight training. </li>
@@ -23,6 +31,17 @@ const AboutPage = () => (
         <li>Promote the spirit of adventure and build self-confidence.</li>
         <li>Identify talent for higher level competitions.</li>
     </ul>
+    </Jumbotron>
+    </div>
+    </Col>
+
+  <Col xs={12} md={4} lg={4} style={{textAlign:"center"}}> 
+  <div>
+  <Card.Img variant="top" src={NuRuns} />
+  </div>
+  </Col>
+  </Row>
+    </Container>
   </React.Fragment>
 );
 export default AboutPage;

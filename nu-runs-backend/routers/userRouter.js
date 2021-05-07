@@ -8,8 +8,15 @@ const auth = require("../middleware/auth");
 
 router.post("/register", async (req, res) => {
   try {
-    const { email, password, passwordVerify,firstname,lastname,userType} = req.body;
-    
+    const {
+      email,
+      password,
+      passwordVerify,
+      firstname,
+      lastname,
+      userType
+    } = req.body;
+
     //validataion
 
 
@@ -37,7 +44,7 @@ router.post("/register", async (req, res) => {
         errorMessage: "Account already exists",
       });
     }
-    
+
 
     //hash the password
 
@@ -57,8 +64,7 @@ router.post("/register", async (req, res) => {
 
     //sign the token
 
-    const token = jwt.sign(
-      {
+    const token = jwt.sign({
         user: savedUser._id,
       },
       process.env.JWT_SECRET
@@ -69,6 +75,9 @@ router.post("/register", async (req, res) => {
 
     res
       .cookie("token", token, {
+        maxAge: 60 * 60 * 1000 * 24 * 10,
+        secure: true,
+        sameSite: true,
         httpOnly: true,
       })
       .send();
@@ -81,7 +90,10 @@ router.post("/register", async (req, res) => {
 //log in
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {
+      email,
+      password
+    } = req.body;
 
     //validataion
     if (!email || !password) {
@@ -90,40 +102,47 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const exisitingUser = await User.findOne({email});
+    const exisitingUser = await User.findOne({
+      email
+    });
 
-    if(!exisitingUser){
-        return res.status(401).json({
-            errorMessage: "Wrong email or password",
-          });
+    if (!exisitingUser) {
+      return res.status(401).json({
+        errorMessage: "Wrong email or password",
+      });
     }
 
-    const passwordCorrect = await bcrypt.compare(password,exisitingUser.passwordHash);
+    const passwordCorrect = await bcrypt.compare(password, exisitingUser.passwordHash);
 
-    if(!passwordCorrect){
-        return res.status(401).json({
-            errorMessage: "Wrong email or password",
-          });
+    if (!passwordCorrect) {
+      return res.status(401).json({
+        errorMessage: "Wrong email or password",
+      });
     }
 
     //sign the token
 
-    const token = jwt.sign(
-        {
-          user: exisitingUser._id,
-          firstname:exisitingUser.firstname
-        },
-        process.env.JWT_SECRET
-      );
-      console.log(token);
-  
-      //send the token in http-only cookie
-  
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-        })
-        .send();
+    const token = jwt.sign({
+        user: exisitingUser._id,
+        firstname: exisitingUser.firstname
+      },
+      process.env.JWT_SECRET
+    );
+    console.log(token);
+
+    //send the token in http-only cookie
+
+    res
+      .cookie("token", token, {
+        maxAge: 60 * 60 * 1000 * 24 * 10,
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .json({
+        token: token,
+        user: exisitingUser._id
+      });
 
   } catch (err) {
     console.log(err);
@@ -138,41 +157,42 @@ router.delete("/delete", auth, async (req, res) => {
     const deletedUser = await User.findByIdAndDelete(req.user);
     res.json(deletedUser);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
 //check if token is valid
-router.post("/tokenisvalid",async(req,res)=>{
-  try{
+router.post("/tokenisvalid", async (req, res) => {
+  try {
     const token = req.cookies.token;
-    if(!token) return res.json(false);
+    if (!token) return res.json(false);
 
-    const verified = jwt.verify(token,process.env.JWT_SECRET);
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
 
-    if(!verified) return res.json(false);
+    if (!verified) return res.json(false);
 
     const user = await User.findById(verified.user);
-    if(!user) return res.json(false);
+    if (!user) return res.json(false);
     return res.json(true);
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
   }
 })
 
-router.get("/logout",async (req,res)=>{
-    res.cookie("token","",{
-        maxAge:new Date(0),
-    }).send();
+router.get("/logout", async (req, res) => {
+  res.cookie("token", "", {
+    maxAge: new Date(0),
+  }).send();
 });
 
-router.get("/",auth,async(req,res)=>{
+router.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
   res.json({
-    token:req.cookies.token,
-    id:user._id,
-  })
+    token: req.cookies.token,
+    id: user._id,
+  });
 })
 
 module.exports = router;

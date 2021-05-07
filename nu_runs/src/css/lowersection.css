@@ -1,0 +1,68 @@
+img 
+{
+   width: 300px;
+   height: 300px;
+}
+
+.examples{
+   background-color: #d9d9d9;
+   text-align: center;
+   color: #284b63;
+   padding: 40px;
+}
+.examples h1{
+   margin-bottom: 20px;
+}
+
+button{
+   border-radius: 10px;
+   border: 1px solid white;
+   width: 120px;
+   height: 50px;
+   color: #3c6e71;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: #3c6e71;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: #3c6e71;
+}
+
+.carousel-indicators li {
+   display: inline-block;
+   width: 5px;
+   height: 5px;
+   margin-top: 30px;
+   text-indent: 0;
+   cursor: pointer;
+   border: none;
+   border-radius: 50%;
+   background-color: #d9d9d9;
+   box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);    
+}
+.carousel-indicators .active {
+   width: 5px;
+   height: 5px;
+   margin-top: 30px;
+   background-color: #353535;
+}
+
+.templateItem{
+   border-radius: 50px;
+}

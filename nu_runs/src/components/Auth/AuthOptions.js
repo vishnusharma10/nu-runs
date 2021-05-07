@@ -16,17 +16,18 @@ function AuthOptions () {
         });
 
         axios.get("http://localhost:8000/auth/logout");
+        
         history.push("/login")
     };
 
     return (
         <nav className="auth-options">
             {userData.user ? (
-                <button className="btn btn-primary mr-2" onClick={logout}>Logout</button>
+                <button className="mr-2" onClick={logout}>Logout</button>
             ) : (
                 <>
-                <button className="btn btn-primary mr-2" onClick={register}>Sign Up</button>
-                <button className="btn btn-primary mr-2" onClick={login}>Login</button>
+                <button className="mr-2" onClick={register}>Sign Up</button>
+                <button className="mr-2" onClick={login}>Login</button>
                 </>
             )}
         </nav>
