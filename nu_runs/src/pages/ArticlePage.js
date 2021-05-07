@@ -6,6 +6,14 @@ import CommentList from "../components/CommentList";
 import UpvotesSection from "../components/UpvotesSection";
 import AddCommentForm from "../components/AddCommentForm";
 import { Jumbotron, Row } from "react-bootstrap";
+import BackgroundImage from "../assets/img/theme/profile-cover.jpg";
+import BackgroundImage1 from "../assets/img/bg1.jpg";
+import BackgroundImage2 from "../assets/img/bg2.jpg";
+import BackgroundImage3 from "../assets/img/bg3.jpg";
+import BackgroundImage4 from "../assets/img/bg4.jpg";
+import BackgroundImage5 from "../assets/img/bg5.jpg";
+import BackgroundImage6 from "../assets/img/bg6.jpg";
+import BackgroundImage7 from "../assets/img/bg7.jpg";
 
 const ArticlePage = ({ match }) => {
   const name = match.params.name;
@@ -32,28 +40,37 @@ const ArticlePage = ({ match }) => {
   return (
     <React.Fragment>
       <div style={{ textAlign: "center", padding: "20px" }}>
-        <h1>{article.title}</h1>
-        <UpvotesSection
-          articleName={name}
-          upvotes={article.upvotes}
-          setArticleInfo={setArticle}
-        ></UpvotesSection>
-        <p>{article.content}</p>
-        <AddCommentForm
-          articleName={name}
-          setArticleInfo={setArticle}
-        ></AddCommentForm>
-        <h2>Other Articles</h2>
-          
-      </div>
-      <CommentList article={article}></CommentList>
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          <h1>{article.title}</h1>
+          <UpvotesSection
+            articleName={name}
+            upvotes={article.upvotes}
+            setArticleInfo={setArticle}
+          ></UpvotesSection>
+          <p
+            style={{
+              textAlign: "justify",
+              paddingLeft: "30px",
+              paddingRight: "30px",
+            }}
+          >
+            {article.content}
+          </p>
+          <AddCommentForm
+            articleName={name}
+            setArticleInfo={setArticle}
+          ></AddCommentForm>
+        </div>
+        <CommentList article={article}></CommentList>
 
-      <Row>
-        
-        <Jumbotron>
-          <ArticleList articles={otherArticles}></ArticleList>
-        </Jumbotron>
-      </Row>
+        <Row>
+          <div style={{ backgroundImage: `url(${BackgroundImage})` }}>
+            <h2 style={{color:"white",marginTop:"50px"}}>Other Articles</h2>
+
+            <ArticleList articles={otherArticles}></ArticleList>
+          </div>
+        </Row>
+      </div>
     </React.Fragment>
   );
 };

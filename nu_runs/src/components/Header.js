@@ -30,15 +30,15 @@ const Header = () => {
             <Row>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
+                  <Card.Body>
                     <Row>
                       <div className="col">
-                        <CardTitle
+                        <Card.Title
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Traffic
-                        </CardTitle>
+                        </Card.Title>
                         <span className="h2 font-weight-bold mb-0">
                           350,897
                         </span>
@@ -55,20 +55,20 @@ const Header = () => {
                       </span>{" "}
                       <span className="text-nowrap">Since last month</span>
                     </p>
-                  </CardBody>
+                  </Card.Body>
                 </Card>
               </Col>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
+                  <Card.Body>
                     <Row>
                       <div className="col">
-                        <CardTitle
+                        <Card.Title
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           New users
-                        </CardTitle>
+                        </Card.Title>
                         <span className="h2 font-weight-bold mb-0">2,356</span>
                       </div>
                       <Col className="col-auto">
@@ -83,20 +83,20 @@ const Header = () => {
                       </span>{" "}
                       <span className="text-nowrap">Since last week</span>
                     </p>
-                  </CardBody>
+                  </Card.Body>
                 </Card>
               </Col>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
+                  <Card.Body>
                     <Row>
                       <div className="col">
-                        <CardTitle
+                        <Card.Title
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Sales
-                        </CardTitle>
+                        </Card.Title>
                         <span className="h2 font-weight-bold mb-0">924</span>
                       </div>
                       <Col className="col-auto">
@@ -111,20 +111,20 @@ const Header = () => {
                       </span>{" "}
                       <span className="text-nowrap">Since yesterday</span>
                     </p>
-                  </CardBody>
+                  </Card.Body>
                 </Card>
               </Col>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
+                  <Card.Body>
                     <Row>
                       <div className="col">
-                        <CardTitle
+                        <Card.Title
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Performance
-                        </CardTitle>
+                        </Card.Title>
                         <span className="h2 font-weight-bold mb-0">49,65%</span>
                       </div>
                       <Col className="col-auto">
@@ -139,7 +139,7 @@ const Header = () => {
                       </span>{" "}
                       <span className="text-nowrap">Since last month</span>
                     </p>
-                  </CardBody>
+                  </Card.Body>
                 </Card>
               </Col>
             </Row>

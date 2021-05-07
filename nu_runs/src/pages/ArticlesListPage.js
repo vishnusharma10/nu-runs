@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ArticleList from "../components/ArticleList";
 import axios from "axios";
+import BackgroundImage from "../assets/img/theme/profile-cover.jpg";
 const ArticlesListPage = ()=>{
 
     const [articles,setArticles] = useState([]);
@@ -16,8 +17,8 @@ const ArticlesListPage = ()=>{
     }
 
     return( <React.Fragment>
-        <div style={{textAlign:"center"}}>
-        <h1>Articles</h1>
+        <div style={{textAlign:"center",backgroundImage: `url(${BackgroundImage})`, paddingBottom:"20px",borderRadius:"20px"}}>
+        <h1 style={{color:"white",padding:"40px"}}>Articles</h1>
        <ArticleList articles={articles}></ArticleList>
         </div>
        

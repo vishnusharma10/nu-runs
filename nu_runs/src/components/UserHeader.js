@@ -19,8 +19,8 @@ import React from "react";
 
 // reactstrap components
 import { Button, Container, Row, Col, Jumbotron } from "react-bootstrap";
-
-const UserHeader = ({firstname}) => {
+import ProfilePic from "../assets/img/theme/team-4-800x800.jpg";
+const UserHeader = ({ firstname }) => {
   return (
     <>
       <div
@@ -33,21 +33,29 @@ const UserHeader = ({firstname}) => {
       >
         <Jumbotron>
           {/* Mask */}
-        <span className="mask bg-gradient-default opacity-8" />
-        {/* Header container */}
-        <Container className="d-flex align-items-center" fluid>
-          <Row>
-            <Col lg="12" md="12">
-              <h1 className="display-2">Hello {firstname}</h1>
-              <p className=" mt-0 mb-5">
-                This is your profile page. You can see the progress you've made
-                with your work and manage your projects or assigned tasks
-              </p>
-            </Col>
-          </Row>
-        </Container>
+          <span className="mask bg-gradient-default opacity-8" />
+          {/* Header container */}
+          <Container className="d-flex align-items-center" fluid>
+            <Row>
+              <Col lg="8" md="8" >
+                <h1 className="display-2">Hello {firstname}</h1>
+                <p className=" mt-0 mb-5">
+                  This is your profile page. You can see the progress you've
+                  made with your health and manage your courses you have
+                  enrolled and challenges you participated in it.
+                </p>
+              </Col>
+              <Col>
+                <img
+                  alt="..."
+                  className="rounded-circle"
+                  style={{ width: "300px", height: "300px" }}
+                  src={ProfilePic}
+                />
+              </Col>
+            </Row>
+          </Container>
         </Jumbotron>
-        
       </div>
     </>
   );

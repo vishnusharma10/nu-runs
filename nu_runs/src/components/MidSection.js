@@ -9,7 +9,7 @@ const MidSection = () => {
       <Container className="steps">
         <Row>
           <Col>
-            <div>
+            <div style={{textAlign:"center",marginTop:"30px"}}>
               <h1>Challenges to keep you motivated</h1>
               <p>
               Life is about accepting the challenges along the way,
@@ -18,7 +18,7 @@ const MidSection = () => {
             </div>
           </Col>
           <Col style={{textAlign:"center"}}>
-          <img style={{margin:"20px",borderRadius:"10px"}}src={ChallengesImage} alt="step 1 procedure"></img>
+          <img style={{marginTop:"10px",marginRight:"10px",borderRadius:"10px"}}src={ChallengesImage} alt="step 1 procedure"></img>
           </Col>
         </Row>
         <Row>
@@ -26,7 +26,7 @@ const MidSection = () => {
           <img style = {{borderRadius:"20px", margin:"20px"}}src={WorkoutImage} alt="our editor"></img>
           </Col>
           <Col>
-          <div>
+          <div style={{textAlign:"center", marginTop:"50px"}}>
               <h1>Personalized Workouts created by our Talented Trainers</h1>
               <p>
               Browse through millions of royalty-free illustrations, photos, footage, music and sounds to build the video you need in any style you like. Customize every single aspect of your video with full flexibility.

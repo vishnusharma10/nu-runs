@@ -54,7 +54,6 @@ export default function SignUp() {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
-  const [userType, setUserType] = useState("");
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [message, setMessage] = useState("");
@@ -68,14 +67,12 @@ export default function SignUp() {
     lastname,
     email,
     password,
-    passwordVerify,
-    userType
+    passwordVerify
   ) => {
     const result = await axios.post("http://localhost:8000/auth/register", {
       email: email,
       password: password,
       passwordVerify: passwordVerify,
-      userType: userType,
       firstname: firstname,
       lastname: lastname,
     });
@@ -100,7 +97,6 @@ export default function SignUp() {
     setPasswordVerify("");
     setFirstName("");
     setLastName("");
-    setUserType("");
   };
 
   const googleSuccess = (res)=>{
@@ -209,7 +205,7 @@ export default function SignUp() {
                 autoComplete="current-password"
               />
             </Grid>
-            <Grid item xs={12}sm={6}>
+           {/*  <Grid item xs={12}sm={6}>
               <div style={{display:"inline-block"}} onChange={(event)=>{
                 setUserType(event.target.value);
               }}>
@@ -223,7 +219,7 @@ export default function SignUp() {
                    <input type="radio" id="trainee"value="Trainee" name="user" /></label>
                
               </div>
-            </Grid>
+            </Grid> */}
           </Grid>
           
           <Button
@@ -231,7 +227,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => registerUser(firstname, lastname, email, password,passwordVerify,userType)}
+            onClick={() => registerUser(firstname, lastname, email, password,passwordVerify)}
             style={{ backgroundColor: "#3c6e71" }}
           >
             Sign Up
