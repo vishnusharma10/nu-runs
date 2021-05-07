@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 
 const CommentList = ({ article }) => {
   console.log(article.comments);
@@ -12,7 +12,7 @@ const CommentList = ({ article }) => {
   }, [article.comments]);
   return (
     <>
-      <h3>Comments</h3>
+      <h3 style={{ color: "#284B63" }}>Comments</h3>
       {comments !== undefined ? (
         comments.map((comment, key) => {
           return (
@@ -20,14 +20,14 @@ const CommentList = ({ article }) => {
               <Col>
                 <div key={key}>
                   <Container>
-                    <Row>
-                      <Col>
-                      
-                      <div style={{textAlign:"center"}}>
-                          <h6><strong>{">>>> "}</strong>{comment.readerName}</h6>
+                    <Row style={{border:"1px dotted black",borderRadius:"20px",margin:"10px",padding:"5px"}}>
+                      <Col style={{padding:"0px"}}>
+                        <div style={{ textAlign: "center",padding:"0px"}}>
+                          <h6 style={{ color: "#284B63" }}>
+                            <strong>{key + 1 + ". "}</strong>
+                            {comment.readerName}
+                          </h6>
                         </div>
-            
-                        
                       </Col>
                       <Col>
                         <div>

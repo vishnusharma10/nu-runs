@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
+
 const ChallengeCard = ({challenge,distance,challengeType,id}) => {
+
+
+
     const getEnrolled = async(userId, challengeId)=>{
       console.log(userId, challengeId);
       const result = await axios.post("http://localhost:8000/api/profile/challenge-enroll/"+userId+"/"+challengeId);
@@ -9,6 +14,8 @@ const ChallengeCard = ({challenge,distance,challengeType,id}) => {
     }
     const [imgUrl, setImgUrl] = useState("");
     const [userId, setUserId] = useState("");
+
+
     const fetchChallengeImage = async(id)=>{
       const result = await axios.get("http://localhost:8000/api/challenges/challenge-img/"+id,{ responseType: 'arraybuffer' });
       let image = btoa(

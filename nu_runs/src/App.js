@@ -14,6 +14,7 @@ import SignUp from "./components/Auth/SignUp";
 import CoursesPage from "./pages/CoursesPage";
 import FooterSection from "./components/FooterSection";
 import ChallengesPage from "./pages/Challenges";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 axios.defaults.withCredentials = true;
 
 function App() {

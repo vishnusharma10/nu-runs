@@ -23,7 +23,7 @@ const CourseCard = ({courseLink,courseTitle,id})=>{
           </a>
         </div>
         <h5 style={{display:"inline-block"}}>
-          <p>{courseTitle}</p>
+          <p style={{color:"white"}}>{courseTitle}</p>
         </h5>
       
       </div>

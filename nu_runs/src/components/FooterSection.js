@@ -12,7 +12,7 @@ import "../css/footersection.css";
 const FooterSection = () => {
   return (
     <>
-      <Jumbotron>
+      <Jumbotron style={{marginBottom:"0px"}} id="footer-section">
         <Container>
           <Row>
             <Col xs={12} md={3} lg={3}>

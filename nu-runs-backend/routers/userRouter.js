@@ -13,14 +13,13 @@ router.post("/register", async (req, res) => {
       password,
       passwordVerify,
       firstname,
-      lastname,
-      userType
+      lastname
     } = req.body;
 
     //validataion
 
 
-    if (!email || !password || !passwordVerify || !firstname || !lastname || !userType) {
+    if (!email || !password || !passwordVerify || !firstname || !lastname) {
       return res.status(400).json({
         errorMessage: "Please enter all the details",
       });
@@ -57,7 +56,6 @@ router.post("/register", async (req, res) => {
       email,
       firstname,
       lastname,
-      userType,
       passwordHash: hashedPassword,
     });
     const savedUser = await newUser.save();
